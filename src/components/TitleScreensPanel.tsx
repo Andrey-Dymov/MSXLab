@@ -17,7 +17,7 @@ export function TitleScreensPanel(){
  useEffect(()=>{setFrozen(null);},[s.session]);
  const live:TitleScreen={vram:s.snapshot?.vram||[],registers:s.snapshot?.vdpRegisters||[],origins:[],sources:[],name:'Текущая карта символов VDP',explanation:'Изображение из текущих таблиц видеопамяти. Адреса исходных данных ROM для этого режима не установлены. Спрайты не включены.',generatedMap:false};
  const screen=(kind==='live'||!supported)?frozen||live:decoded.screen;
- const unsupportedMode=!!screen&&(((screen.registers[0]||0)&12)!==0||!['SCREEN 1','SCREEN 2'].includes(modeName(screen.registers))); 
+ const unsupportedMode=!!screen&&(((screen.registers[0]||0)&12)!==0||!['SCREEN 1','SCREEN 2'].includes(modeName(screen.registers)));
  const info=screen?titleTileInfo(screen,picked.x,picked.y):null;
  const symbolCode=info?.tile??0;
  const asciiControls=['NUL','SOH','STX','ETX','EOT','ENQ','ACK','BEL','BS','HT','LF','VT','FF','CR','SO','SI','DLE','DC1','DC2','DC3','DC4','NAK','SYN','ETB','CAN','EM','SUB','ESC','FS','GS','RS','US'];
