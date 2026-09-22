@@ -4,6 +4,10 @@
 
 A desktop workspace for running, debugging, and exploring MSX software. MSXLab combines an emulator, a Z80 disassembler, memory and graphics viewers, sound analysis, code annotations, and tools for investigating game logic.
 
+**Built for AI-assisted MSX development.** One of MSXLab’s main purposes is to give AI agents direct control of a working MSX laboratory through its API. An agent can inspect memory and code, control execution, test hypotheses, collect traces, and save findings as project annotations. Together with source-editing tools, this supports a repeatable cycle of studying, creating, and debugging MSX programs, with results checked on the emulated machine.
+
+The aim is an order-of-magnitude gain in productivity and a broader range of investigations that people and AI can carry out together. This is a design goal, not a measured performance guarantee. The local HTTP API and MCP bridge are central to that workflow; see [automation and assistant integration](#automation-and-assistant-integration).
+
 **Multilingual interface:** English, Russian, Japanese, Portuguese, Dutch, Spanish, and Simplified Chinese. Language packs cover menus, panels, settings, tooltips, and application messages. See [translation coverage](docs/LANGUAGES.md).
 
 Work with the live state of an emulated machine: pause a program, inspect its data, identify instructions that changed it, and save your findings in a project.
