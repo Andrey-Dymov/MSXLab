@@ -1,0 +1,47 @@
+MSXLab Noncommercial Attribution License 1.0
+
+Copyright (c) 2026 Andrey Dymov
+Repository: https://github.com/Andrey-Dymov/MSXLab
+
+1. Permission
+
+Permission is granted, free of charge, to use, copy, study, modify, and
+redistribute the original MSXLab code and accompanying original documentation,
+including modified versions, solely for noncommercial purposes, subject to the
+conditions below.
+
+2. Noncommercial use
+
+Noncommercial means use that is not primarily intended for or directed toward
+commercial advantage or monetary compensation. Commercial use, sale, inclusion
+in a paid product or service, or other use primarily intended for commercial
+advantage requires separate permission from the copyright holder.
+
+3. Attribution
+
+Every distributed copy or modified version must retain this license, the
+copyright notice, and the following attribution in its documentation, README,
+or About/Credits section:
+
+Based on MSXLab by Andrey Dymov
+https://github.com/Andrey-Dymov/MSXLab
+
+If the software is made available to users without distributing a copy, this
+attribution must be available in the service's documentation or About/Credits
+section. Modified versions must identify that changes have been made.
+Attribution does not imply endorsement by the original author.
+
+4. Third-party materials
+
+This license applies only to original materials for which the copyright holder
+can grant permission. Dependencies, WebMSX, BIOS ROMs, DOS files, games, and other
+third-party materials remain subject to their own terms. This license grants
+no rights to those materials. See THIRD_PARTY.md.
+
+5. Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. TO THE EXTENT PERMITTED
+BY APPLICABLE LAW, THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.

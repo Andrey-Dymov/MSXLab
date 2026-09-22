@@ -223,4 +223,4 @@ Laboratory source code and user projects are stored separately. See [connecting 
 
 ## Contributing and licensing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and [THIRD_PARTY.md](THIRD_PARTY.md) for third-party components. A license for MSXLab’s own code has not yet been selected; a LICENSE file will be added after the owner makes that decision.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and [THIRD_PARTY.md](THIRD_PARTY.md) for third-party components. **Noncommercial use is permitted**, including copying, modification, and redistribution, provided that you retain attribution and a link to **https://github.com/Andrey-Dymov/MSXLab**. Commercial use requires separate permission from the author. See the [MSXLab Noncommercial Attribution License](LICENSE) for the full terms. This license does not cover third-party components.
