@@ -8,7 +8,7 @@ A desktop workspace for running, debugging, and exploring MSX software. MSXLab c
 
 Work with the live state of an emulated machine: pause a program, inspect its data, identify instructions that changed it, and save your findings in a project.
 
-MSXLab is under active development. Some specialized tools target King’s Valley; they do not automatically recognize resources in arbitrary games.
+MSXLab is under active development. Some specialized tools support only specific verified data formats; they do not automatically recognize resources in arbitrary programs.
 
 ![MSXLab debugging an original Z80 counter demonstration](docs/images/msxlab-workspace.png)
 
@@ -93,8 +93,8 @@ Static analysis and recorded execution provide different evidence. Static analys
 - Emulator screen, PNG captures, and hardware sprite inspection.
 - Sprites, tiles, fonts, palettes, bitmaps, and character maps.
 - An **Assets** catalog of resource descriptions.
-- King’s Valley title screens: reconstructed images, three SCREEN 2 sections, character codes, pixel masks, per-line colors, and source data details.
-- King’s Valley level editing: walls and empty spaces, supported objects, existing ladders, and saving a new ROM version.
+- SCREEN 2 inspection: character codes, pixel masks, per-line colors, and source data details.
+- Format-specific level editing for supported project data; this is not a universal level editor.
 - PSG registers, sound recording, piano roll, and music data export.
 
 Level editing and title-screen reconstruction depend on the specific game format. PSG recording captures observed sound rather than recovering an original score.
@@ -210,10 +210,8 @@ AI setup is available in English and Russian; the other supporting documents bel
 - [Graphics and assets](docs/ASSETS.md)
 - [Music and PSG](docs/MUSIC.md)
 - [Memory activity](docs/ACTIVITY.md)
-- [King’s Valley title screens](docs/KINGS-VALLEY-SCREENS.md)
 - [Text encodings](docs/TEXT-CHARSETS.md)
 - [AI integration](docs/AI.md)
-- [Earlier README](docs/README-legacy.md) — historical notes; some details may be outdated.
 
 ## Development and validation
 
