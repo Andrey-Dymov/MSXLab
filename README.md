@@ -193,6 +193,12 @@ The bridge forwards requests to the same local HTTP API. Its actual tool list is
 
 See the [automation API reference](docs/automation-api.md) for arguments, limitations, and examples.
 
+### Analysis workspace in Japanese
+
+![MSXLab light theme with Japanese menus, PSG playback, font inspection, and call analysis](docs/images/msxlab-analysis-light.png)
+
+*Light theme with the panel selector open. The demonstration uses an original test-tone program and project-owned font samples; the PSG capture and call timeline contain recorded execution data.*
+
 ## Documentation
 
 The following supporting documents are currently in Russian:
