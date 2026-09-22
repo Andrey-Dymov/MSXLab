@@ -1717,5 +1717,11 @@
   "{p0} bpp — {p0} bits per pixel, {p1} colours": "{p0} bpp — {p0} bits per pixel, {p1} colours",
   "CPU — mapped memory": "CPU — memory visible to the processor",
   "VRAM — video memory": "VRAM — video memory",
-  "ROM — file bytes": "ROM — file bytes"
+  "ROM — file bytes": "ROM — file bytes",
+  "ai.setupHelp": "Use your own Chat Completions-compatible provider: enter its HTTPS API base URL, model ID and API key, enable AI, then save.",
+  "ai.sentContext": "Only selected instructions and related label names, comments and addresses are sent when you request analysis. Requests use your provider account.",
+  "ai.key": "API key",
+  "ai.keyPresent": "A key is configured for the saved API address.",
+  "ai.keyMissing": "No key is configured for this API address.",
+  "ai.keyHelp": "Leave blank to keep the saved key. New keys are stored locally with operating-system encryption; they are never included in project exports."
 }

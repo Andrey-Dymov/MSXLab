@@ -1717,5 +1717,11 @@
   "{p0} bpp — {p0} bits per pixel, {p1} colours": "{p0} bpp — 每像素 {p0} 位，{p1} 色",
   "CPU — mapped memory": "CPU — 处理器可见的内存",
   "VRAM — video memory": "VRAM — 显存",
-  "ROM — file bytes": "ROM — 文件字节"
+  "ROM — file bytes": "ROM — 文件字节",
+  "ai.setupHelp": "配置您自己的 Chat Completions 兼容服务：输入 HTTPS API 基础地址、模型 ID 和 API 密钥，启用 AI 并保存。",
+  "ai.sentContext": "请求分析时，仅发送选中的指令及相关标签名称、注释和地址。请求使用您自己的服务商账户。",
+  "ai.key": "API 密钥",
+  "ai.keyPresent": "已为保存的 API 地址配置密钥。",
+  "ai.keyMissing": "尚未为此 API 地址配置密钥。",
+  "ai.keyHelp": "留空以保留已保存的密钥。新密钥使用操作系统加密保存在本地，不包含在项目导出中。"
 }

@@ -1717,5 +1717,11 @@
   "{p0} bpp — {p0} bits per pixel, {p1} colours": "{p0} bpp — {p0} bits por píxel, {p1} colores",
   "CPU — mapped memory": "CPU — memoria visible para el procesador",
   "VRAM — video memory": "VRAM — memoria de vídeo",
-  "ROM — file bytes": "ROM — bytes del archivo"
+  "ROM — file bytes": "ROM — bytes del archivo",
+  "ai.setupHelp": "Configure su proveedor compatible con Chat Completions: introduzca la URL HTTPS de la API, el modelo y su clave, active la IA y guarde.",
+  "ai.sentContext": "El análisis envía las instrucciones seleccionadas y los nombres, comentarios y direcciones de las etiquetas relacionadas. Las solicitudes usan su cuenta del proveedor.",
+  "ai.key": "Clave de API",
+  "ai.keyPresent": "Hay una clave configurada para la dirección API guardada.",
+  "ai.keyMissing": "No hay clave configurada para esta dirección API.",
+  "ai.keyHelp": "Deje el campo vacío para conservar la clave. Las nuevas claves se guardan localmente con cifrado del sistema y no se exportan con los proyectos."
 }

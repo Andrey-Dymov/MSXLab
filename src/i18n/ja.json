@@ -1717,5 +1717,11 @@
   "{p0} bpp — {p0} bits per pixel, {p1} colours": "{p0} bpp — 1 ピクセル {p0} ビット、{p1} 色",
   "CPU — mapped memory": "CPU — プロセッサから見えるメモリ",
   "VRAM — video memory": "VRAM — ビデオメモリ",
-  "ROM — file bytes": "ROM — ファイルのバイト列"
+  "ROM — file bytes": "ROM — ファイルのバイト列",
+  "ai.setupHelp": "Chat Completions 互換サービスの HTTPS API URL、モデル ID、API キーを入力し、AI を有効にして保存してください。",
+  "ai.sentContext": "解析を依頼すると、選択した命令と関連ラベル名、コメント、アドレスが送信されます。ご自身のサービスアカウントが使用されます。",
+  "ai.key": "API キー",
+  "ai.keyPresent": "保存した API アドレスのキーが設定されています。",
+  "ai.keyMissing": "この API アドレスのキーは未設定です。",
+  "ai.keyHelp": "空欄なら既存のキーを保持します。新しいキーは OS の暗号化でローカル保存され、プロジェクトのエクスポートには含まれません。"
 }

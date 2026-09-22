@@ -1717,5 +1717,11 @@
   "{p0} bpp — {p0} bits per pixel, {p1} colours": "{p0} bpp — {p0} bits per pixel, {p1} kleuren",
   "CPU — mapped memory": "CPU — geheugen zichtbaar voor de processor",
   "VRAM — video memory": "VRAM — videogeheugen",
-  "ROM — file bytes": "ROM — bytes van het bestand"
+  "ROM — file bytes": "ROM — bytes van het bestand",
+  "ai.setupHelp": "Stel uw eigen Chat Completions-provider in: voer de HTTPS-API-URL, model-ID en API-sleutel in, schakel AI in en sla op.",
+  "ai.sentContext": "Analyse verstuurt alleen de geselecteerde instructies en bijbehorende labelnamen, opmerkingen en adressen. Verzoeken gebruiken uw provideraccount.",
+  "ai.key": "API-sleutel",
+  "ai.keyPresent": "Een sleutel is ingesteld voor het opgeslagen API-adres.",
+  "ai.keyMissing": "Geen sleutel ingesteld voor dit API-adres.",
+  "ai.keyHelp": "Laat leeg om de opgeslagen sleutel te behouden. Nieuwe sleutels worden lokaal met systeemversleuteling opgeslagen en niet met projecten geëxporteerd."
 }

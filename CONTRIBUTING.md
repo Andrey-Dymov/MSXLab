@@ -8,6 +8,8 @@
 npm ci
 npm run typecheck
 node tests/automation-api.mjs
+node tests/ai-settings.cjs
+node tests/languages.mjs
 npm run build
 ```
 

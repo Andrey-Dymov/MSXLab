@@ -131,6 +131,10 @@ Creating a project from a file accepts `.rom`, `.mx1`, `.mx2`, `.com`, and `.bas
 
 Each project has a `projects/<id>/project.json` file. Depending on the project, adjacent directories include `program`, `environment`, `builds`, `research`, `resources`, `captures`, and `sessions`. Original programs are copied into the project, and prepared launch bundles are stored with checksums.
 
+## Optional AI assistance
+
+Connect your own Chat Completions-compatible provider in **Workspace settings → AI**. Enter its API base URL, model ID and your own API key. AI is disabled by default; no author account or key is bundled. See the [quick setup and data-sharing details](docs/AI.md).
+
 ## Automation and assistant integration
 
 MSXLab exposes a **local HTTP API** and includes a **stdio MCP bridge** for compatible clients. Both control an already running instance on the same computer; access from other computers is not configured.
@@ -201,7 +205,7 @@ See the [automation API reference](docs/automation-api.md) for arguments, limita
 
 ## Documentation
 
-The following supporting documents are currently in Russian:
+AI setup is available in English and Russian; the other supporting documents below are currently in Russian:
 
 - [Graphics and assets](docs/ASSETS.md)
 - [Music and PSG](docs/MUSIC.md)
