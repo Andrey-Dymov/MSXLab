@@ -4,6 +4,8 @@
 
 A desktop workspace for running, debugging, and exploring MSX software. MSXLab combines an emulator, a Z80 disassembler, memory and graphics viewers, sound analysis, code annotations, and tools for investigating game logic.
 
+**Multilingual interface:** English, Russian, Japanese, Portuguese, Dutch, Spanish, and Simplified Chinese. Language packs cover menus, panels, settings, tooltips, and application messages. See [translation coverage](docs/LANGUAGES.md).
+
 Work with the live state of an emulated machine: pause a program, inspect its data, identify instructions that changed it, and save your findings in a project.
 
 MSXLab is under active development. Some specialized tools target King’s Valley; they do not automatically recognize resources in arbitrary games.
