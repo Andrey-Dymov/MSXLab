@@ -139,6 +139,10 @@ Each project has a `projects/<id>/project.json` file. Depending on the project, 
 
 Connect your own Chat Completions-compatible provider in **Workspace settings → AI**. Enter its API base URL, model ID and your own API key. AI is disabled by default; no author account or key is bundled. See the [quick setup and data-sharing details](docs/AI.md).
 
+![How MSXLab works: inspection panels built on WebMSX, with user and AI access](docs/images/msxlab-architecture.png)
+
+*Architecture overview: WebMSX emulates the machine; MSXLab adds inspection and debugging panels, with HTTP API and MCP access for AI agents.*
+
 ## Automation and assistant integration
 
 MSXLab exposes a **local HTTP API** and includes a **stdio MCP bridge** for compatible clients. Both control an already running instance on the same computer; access from other computers is not configured.
