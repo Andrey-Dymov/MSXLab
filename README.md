@@ -10,6 +10,10 @@ Work with the live state of an emulated machine: pause a program, inspect its da
 
 MSXLab is under active development. Some specialized tools target King’s Valley; they do not automatically recognize resources in arbitrary games.
 
+![MSXLab debugging an original Z80 counter demonstration](docs/images/msxlab-workspace.png)
+
+*Live debugging workspace, paused in a small demonstration written for this screenshot. No game artwork or third-party program screens are shown.*
+
 ## Getting started
 
 The tested environment is macOS with Node.js 23 and npm. Other platforms have not been verified.
