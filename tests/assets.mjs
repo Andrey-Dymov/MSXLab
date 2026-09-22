@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import {createServer} from 'vite';const server=await createServer({server:{middlewareMode:true}});
+try{const {defaultAsset:d,assetPixel,assetAt,mapItem,assetGeometry}=await server.ssrLoadModule('/src/backend/assets.ts');
+ assert.equal(assetPixel([0x80],d,0,0,0).color,15);assert.equal(assetPixel([0x80],d,0,1,0).color,0);assert.equal(assetPixel([0x80],d,0,0,1),null);
+ assert.equal(assetPixel([0b01101100],{...d,bpp:2},0,0,0).color,1);assert.equal(assetPixel([0b01101100],{...d,bpp:2},0,1,0).color,2);
+ assert.equal(assetPixel([0x80,0x80],{...d,format:'planes',bpp:2,height:1},0,0,0).color,3);assert.equal(assetPixel([0x80],{...d,format:'planes',bpp:2,height:1},0,0,0),null);
+ const sprite=Array(32).fill(0);sprite[16]=0x80;sprite[8]=0x80;const sc={...d,format:'sprite16',width:16,height:16};assert.equal(assetPixel(sprite,sc,0,8,0).address,16);assert.equal(assetPixel(sprite,sc,0,0,8).address,8);assert.equal(assetPixel(sprite,sc,0,8,8).address,24);assert.equal(assetGeometry(sc).item,32);
+ const col={...d,format:'msx-color',height:1,colorBase:1};assert.equal(assetPixel([0x80,0xa3],col,0,0,0).color,10);assert.equal(assetPixel([0x80,0xa3],col,0,1,0).color,3);assert.equal(assetPixel([0x80],col,0,0,0),null);
+ assert.equal(mapItem([0x02,0x01],{...d,mapEntry:'u16le'},0,0).item,258);assert.equal(mapItem([0x02,0x01],{...d,mapEntry:'u16be'},0,0).item,513);assert.equal(mapItem([0],{...d,mapEntry:'u16le'},0,0),null);
+ assert.equal(assetAt([0x80],{...d,view:'text',text:'A',firstCode:65},0,0).color,15);assert.equal(assetAt([0x80],{...d,view:'text',text:'Б',charset:'Б'},0,0).item,0);assert.equal(assetAt([0x80,65],{...d,view:'text',textSource:'memory',textBase:1,firstCode:65},0,0).mapAddress,1);assert.equal(assetPixel([0x80,0x80],{...d,end:0},0,0,1),null);
+ const {composedSpritePixel}=await server.ssrLoadModule('/src/backend/graphics.ts');const mem=Array(16384).fill(255),sp=[{index:0,address:0,x:0,y:0,pattern:0,color:0},{index:1,address:4,x:0,y:0,pattern:0,color:3}];assert.equal(composedSpritePixel(mem,[0,0],sp,0,0).index,1);sp[0].color=2;assert.equal(composedSpritePixel(mem,[0,0],sp,0,0).index,0);assert.equal(composedSpritePixel(mem,[0,1],sp,15,15).index,0);assert.equal(composedSpritePixel(mem,[0,0],sp,15,15),null);
+ console.log('PASS asset decoders: packed/planar, sprite quadrants, MSX colours, endian maps, custom fonts, memory text, bounds, composition priority/transparency/magnification');
+}finally{await server.close();}

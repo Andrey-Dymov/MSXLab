@@ -1,0 +1,23 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+const env={...process.env,MSXLAB_USER_DATA:'/tmp/msxlab-edit-'+Date.now()};delete env.ELECTRON_RUN_AS_NODE;let app;
+try{
+ app=await electron.launch({args:['.'],env});const page=await app.firstWindow();const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.waitForSelector('.panel-disassembler tbody tr',{timeout:20000});await page.waitForTimeout(1200);
+ const info=JSON.parse(await fs.readFile('.msxlab-runtime.json','utf8'));
+ async function api(command,args={},fails=false){const response=await fetch(info.url,{method:'POST',headers:{Authorization:'Bearer '+info.token,'Content-Type':'application/json'},body:JSON.stringify({command,args})});const body=await response.json();if(fails){assert.equal(response.status,400);assert(body.error);return;}assert(!body.error,body.error);return body.result;}
+ await api('writeMemory',{space:'cpu',address:0xe100,bytes:[1]},true);
+ await api('pause');await page.waitForFunction(()=>document.querySelector('.backend-badge').textContent==='PAUSED');
+ const frame=page.frames().find(f=>f.url().includes('/engine/index.html'));await frame.evaluate(()=>{const c=WMSX.room.machine.eval('cpu'),r=c.saveState();Object.assign(r,{IFF1:0,INT:255,ai:false});c.loadState(r);});
+ await api('writeMemory',{space:'cpu',address:0xe100,bytes:[0x11,0x22]});assert.deepEqual((await api('readMemory',{address:0xe100,length:2})).bytes,[0x11,0x22]);
+ await api('writeMemory',{space:'cpu',address:0xe100,bytes:[0x99,256]},true);assert.deepEqual((await api('readMemory',{address:0xe100,length:2})).bytes,[0x11,0x22]);
+ await api('writeMemory',{space:'cpu',address:0x4000,bytes:[0]},true);await api('writeMemory',{space:'rom',address:0,bytes:[0]},true);
+ await api('writeMemory',{space:'vram',address:0x3fff,bytes:[0xa5]});assert.equal((await api('readMemory',{space:'vram',address:0x3fff,length:1})).bytes[0],0xa5);await api('writeMemory',{space:'vram',address:0x3fff,bytes:[1,2]},true);
+ await page.locator('.panel-memory').getByRole('textbox',{name:'Address',exact:true}).fill('E100');await page.locator('.panel-memory').getByRole('textbox',{name:'Address',exact:true}).press('Enter');await page.locator('.panel-memory').getByRole('button',{name:'Edit bytes',exact:true}).click();await page.getByRole('textbox',{name:'New memory bytes'}).fill('AA 55');await page.getByRole('button',{name:'Write bytes',exact:true}).click();await page.waitForTimeout(100);assert.deepEqual((await api('readMemory',{address:0xe100,length:2})).bytes,[0xaa,0x55]);await page.getByRole('button',{name:'Undo last write'}).click();await page.waitForTimeout(100);assert.deepEqual((await api('readMemory',{address:0xe100,length:2})).bytes,[0x11,0x22]);
+ await api('writeMemory',{space:'cpu',address:0xe100,bytes:[0x77],expected:[0xaa]},true);assert.equal((await api('readMemory',{address:0xe100,length:1})).bytes[0],0x11);
+ await page.getByRole('button',{name:'Edit register',exact:true}).click();await page.getByRole('combobox',{name:'Register to edit'}).selectOption('AF');await page.getByRole('textbox',{name:'New register value'}).fill('1234');await page.getByRole('button',{name:'Write register',exact:true}).click();await page.waitForTimeout(100);let r=await api('registers');assert.equal(r.A,0x12);assert.equal(r.F,0x34);assert.equal(await page.locator('.flags .flag-on').count(),3);
+ await api('setRegister',{name:'A',value:256},true);assert.equal((await api('registers')).A,0x12);await api('setRegister',{name:'IFF1',value:1},true);
+ await api('writeMemory',{space:'cpu',address:0xc000,bytes:[0,0,0]});await api('setRegister',{name:'PC',value:0xc000});await api('setRegister',{name:'R',value:0xfe});assert.equal((await api('registers')).R,0xfe);await api('step');await page.waitForTimeout(100);r=await api('registers');assert.equal(r.PC,0xc001);assert.equal(r.R,0xff);await api('step');await page.waitForTimeout(100);assert.equal((await api('registers')).R,0x80);
+ await page.getByRole('button',{name:'Follow PC',exact:true}).click();await page.waitForTimeout(100);assert.equal(await page.locator('.panel-disassembler').getByRole('textbox',{name:'Address',exact:true}).inputValue(),'C002');await api('step');await page.waitForTimeout(100);assert.equal(await page.locator('.panel-disassembler').getByRole('textbox',{name:'Address',exact:true}).inputValue(),'C003');
+ assert.deepEqual(errors,[]);console.log('PASS paused RAM/VRAM edits, UI undo, conflict rejection, ROM/bounds protection, register UI and validation, R bit 7 and Follow PC');
+}finally{if(app)await app.close();await fs.rm(env.MSXLAB_USER_DATA,{recursive:true,force:true});}

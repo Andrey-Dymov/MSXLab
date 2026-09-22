@@ -1,0 +1,370 @@
+{
+  "0": {
+    "name": "_TERM0",
+    "description": "PROGRAM TERMINATE"
+  },
+  "1": {
+    "name": "_CONIN",
+    "description": "CONSOLE INPUT"
+  },
+  "2": {
+    "name": "_CONOUT",
+    "description": "CONSOLE OUTPUT"
+  },
+  "3": {
+    "name": "_AUXIN",
+    "description": "AUXILIARY INPUT"
+  },
+  "4": {
+    "name": "_AUXOUT",
+    "description": "AUXILIARY OUTPUT"
+  },
+  "5": {
+    "name": "_LSTOUT",
+    "description": "PRINTER OUTPUT"
+  },
+  "6": {
+    "name": "_DIRIO",
+    "description": "DIRECT CONSOLE I/O"
+  },
+  "7": {
+    "name": "_DIRIN",
+    "description": "DIRECT CONSOLE INPUT"
+  },
+  "8": {
+    "name": "_INNOE",
+    "description": "CONSOLE INPUT WITHOUT ECHO"
+  },
+  "9": {
+    "name": "_STROUT",
+    "description": "STRING OUTPUT"
+  },
+  "10": {
+    "name": "_BUFIN",
+    "description": "BUFFERED LINE INPUT"
+  },
+  "11": {
+    "name": "_CONST",
+    "description": "CONSOLE STATUS"
+  },
+  "12": {
+    "name": "_CPMVER",
+    "description": "RETURN VERSION NUMBER"
+  },
+  "13": {
+    "name": "_DSKRST",
+    "description": "DISK RESET"
+  },
+  "14": {
+    "name": "_SELDSK",
+    "description": "SELECT DISK"
+  },
+  "15": {
+    "name": "_FOPEN",
+    "description": "OPEN FILE [FCB]"
+  },
+  "16": {
+    "name": "_FCLOSE",
+    "description": "CLOSE FILE [FCB]"
+  },
+  "17": {
+    "name": "_SFIRST",
+    "description": "SEARCH FOR FIRST [FCB]"
+  },
+  "18": {
+    "name": "_SNEXT",
+    "description": "SEARCH FOR NEXT [FCB]"
+  },
+  "19": {
+    "name": "_FDEL",
+    "description": "DELETE FILE [FCB]"
+  },
+  "20": {
+    "name": "_RDSEQ",
+    "description": "SEQUENTIAL READ [FCB]"
+  },
+  "21": {
+    "name": "_WRSEQ",
+    "description": "SEQUENTIAL WRITE [FCB]"
+  },
+  "22": {
+    "name": "_FMAKE",
+    "description": "CREATE FILE [FCB]"
+  },
+  "23": {
+    "name": "_FREN",
+    "description": "RENAME FILE [FCB]"
+  },
+  "24": {
+    "name": "_LOGIN",
+    "description": "GET LOGIN VECTOR"
+  },
+  "25": {
+    "name": "_CURDRV",
+    "description": "GET CURRENT DRIVE"
+  },
+  "26": {
+    "name": "_SETDTA",
+    "description": "SET DISK TRANSFER ADDRESS"
+  },
+  "27": {
+    "name": "_ALLOC",
+    "description": "GET ALLOCATION INFORMATION"
+  },
+  "33": {
+    "name": "_RDRND",
+    "description": "RANDOM READ [FCB]"
+  },
+  "34": {
+    "name": "_WRRND",
+    "description": "RANDOM WRITE [FCB]"
+  },
+  "35": {
+    "name": "_FSIZE",
+    "description": "GET FILE SIZE [FCB]"
+  },
+  "36": {
+    "name": "_SETRND",
+    "description": "SET RANDOM RECORD [FCB]"
+  },
+  "38": {
+    "name": "_WRBLK",
+    "description": "RANDOM BLOCK WRITE [FCB]"
+  },
+  "39": {
+    "name": "_RDBLK",
+    "description": "RANDOM BLOCK READ [FCB]"
+  },
+  "40": {
+    "name": "_WRZER",
+    "description": "RANDOM WRITE WITH ZERO FILL [FCB]"
+  },
+  "42": {
+    "name": "_GDATE",
+    "description": "GET DATE"
+  },
+  "43": {
+    "name": "_SDATE",
+    "description": "SET DATE"
+  },
+  "44": {
+    "name": "_GTIME",
+    "description": "GET TIME"
+  },
+  "45": {
+    "name": "_STIME",
+    "description": "SET TIME"
+  },
+  "46": {
+    "name": "_VERIFY",
+    "description": "SET/RESET VERIFY FLAG"
+  },
+  "47": {
+    "name": "_RDABS",
+    "description": "ABSOLUTE SECTOR READ"
+  },
+  "48": {
+    "name": "_WRABS",
+    "description": "ABSOLUTE SECTOR WRITE"
+  },
+  "49": {
+    "name": "_DPARM",
+    "description": "GET DISK PARAMETERS"
+  },
+  "64": {
+    "name": "_FFIRST",
+    "description": "FIND FIRST ENTRY"
+  },
+  "65": {
+    "name": "_FNEXT",
+    "description": "FIND NEXT ENTRY"
+  },
+  "66": {
+    "name": "_FNEW",
+    "description": "FIND NEW ENTRY"
+  },
+  "67": {
+    "name": "_OPEN",
+    "description": "OPEN FILE HANDLE"
+  },
+  "68": {
+    "name": "_CREATE",
+    "description": "CREATE FILE HANDLE"
+  },
+  "69": {
+    "name": "_CLOSE",
+    "description": "CLOSE FILE HANDLE"
+  },
+  "70": {
+    "name": "_ENSURE",
+    "description": "ENSURE FILE HANDLE"
+  },
+  "71": {
+    "name": "_DUP",
+    "description": "DUPLICATE FILE HANDLE"
+  },
+  "72": {
+    "name": "_READ",
+    "description": "READ FROM FILE HANDLE"
+  },
+  "73": {
+    "name": "_WRITE",
+    "description": "WRITE TO FILE HANDLE"
+  },
+  "74": {
+    "name": "_SEEK",
+    "description": "MOVE FILE HANDLE POINTER"
+  },
+  "75": {
+    "name": "_IOCTL",
+    "description": "I/O CONTROL FOR DEVICES"
+  },
+  "76": {
+    "name": "_HTEST",
+    "description": "TEST FILE HANDLE"
+  },
+  "77": {
+    "name": "_DELETE",
+    "description": "DELETE FILE OR SUBDIRECTORY"
+  },
+  "78": {
+    "name": "_RENAME",
+    "description": "RENAME FILE OR SUBDIRECTORY"
+  },
+  "79": {
+    "name": "_MOVE",
+    "description": "MOVE FILE OR SUBDIRECTORY"
+  },
+  "80": {
+    "name": "_ATTR",
+    "description": "GET/SET FILE ATTRIBUTES"
+  },
+  "81": {
+    "name": "_FTIME",
+    "description": "GET/SET FILE DATE AND TIME"
+  },
+  "82": {
+    "name": "_HDELETE",
+    "description": "DELETE FILE HANDLE"
+  },
+  "83": {
+    "name": "_HRENAME",
+    "description": "RENAME FILE HANDLE"
+  },
+  "84": {
+    "name": "_HMOVE",
+    "description": "MOVE FILE HANDLE"
+  },
+  "85": {
+    "name": "_HATTR",
+    "description": "GET/SET FILE HANDLE ATTRIBUTES"
+  },
+  "86": {
+    "name": "_HFTIME",
+    "description": "GET/SET FILE HANDLE DATE AND TIME"
+  },
+  "87": {
+    "name": "_GETDTA",
+    "description": "GET DISK TRANSFER ADDRESS"
+  },
+  "88": {
+    "name": "_GETVFY",
+    "description": "GET VERIFY FLAG SETTING"
+  },
+  "89": {
+    "name": "_GETCD",
+    "description": "GET CURRENT DIRECTORY"
+  },
+  "90": {
+    "name": "_CHDIR",
+    "description": "CHANGE CURRENT DIRECTORY"
+  },
+  "91": {
+    "name": "_PARSE",
+    "description": "PARSE PATHNAME"
+  },
+  "92": {
+    "name": "_PFILE",
+    "description": "PARSE FILENAME"
+  },
+  "93": {
+    "name": "_CHKCHR",
+    "description": "CHECK CHARACTER"
+  },
+  "94": {
+    "name": "_WPATH",
+    "description": "GET WHOLE PATH STRING"
+  },
+  "95": {
+    "name": "_FLUSH",
+    "description": "FLUSH DISK BUFFERS"
+  },
+  "96": {
+    "name": "_FORK",
+    "description": "FORK TO CHILD PROCESS"
+  },
+  "97": {
+    "name": "_JOIN",
+    "description": "REJOIN PARENT PROCESS"
+  },
+  "98": {
+    "name": "_TERM",
+    "description": "TERMINATE WITH ERROR CODE"
+  },
+  "99": {
+    "name": "_DEFAB",
+    "description": "DEFINE ABORT EXIT ROUTINE"
+  },
+  "100": {
+    "name": "_DEFER",
+    "description": "DEFINE DISK ERROR HANDLER ROUTINE"
+  },
+  "101": {
+    "name": "_ERROR",
+    "description": "GET PREVIOUS ERROR CODE"
+  },
+  "102": {
+    "name": "_EXPLAIN",
+    "description": "EXPLAIN ERROR CODE"
+  },
+  "103": {
+    "name": "_FORMAT",
+    "description": "FORMAT A DISK"
+  },
+  "104": {
+    "name": "_RAMD",
+    "description": "CREATE OR DESTROY RAMDISK"
+  },
+  "105": {
+    "name": "_BUFFER",
+    "description": "ALLOCATE SECTOR BUFFERS"
+  },
+  "106": {
+    "name": "_ASSIGN",
+    "description": "LOGICAL DRIVE ASSIGNMENT"
+  },
+  "107": {
+    "name": "_GENV",
+    "description": "GET ENVIRONMENT ITEM"
+  },
+  "108": {
+    "name": "_SENV",
+    "description": "SET ENVIRONMENT ITEM"
+  },
+  "109": {
+    "name": "_FENV",
+    "description": "FIND ENVIRONMENT ITEM"
+  },
+  "110": {
+    "name": "_DSKCHK",
+    "description": "GET/SET DISK CHECK STATUS"
+  },
+  "111": {
+    "name": "_DOSVER",
+    "description": "GET MSX-DOS VERSION NUMBER"
+  },
+  "112": {
+    "name": "_REDIR",
+    "description": "GET/SET REDIRECTION STATE"
+  }
+}

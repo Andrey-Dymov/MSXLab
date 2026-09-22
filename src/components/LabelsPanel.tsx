@@ -1,0 +1,29 @@
+import {createPortal} from 'react-dom';
+import {t as tr} from '../i18n';
+import {labelTypeCaption} from '../backend/research';
+import {scopeCaption} from '../backend/memoryScope';
+import {SquarePen} from 'lucide-react';
+import {SymbolLibrary} from './SymbolLibrary';
+import {watchAddress,pinWatch} from '../backend/watchActions';
+import {LabelTransfer} from './LabelTransfer';
+import {useOpenView} from '../state/panelActions';
+import {labelView} from '../backend/labelView';
+import {useEffect,useState} from 'react';
+import {useDebugger,select,updateProject} from '../state/debugger';
+import {usePanelSetting} from '../state/panelSettings';
+import {hex} from '../backend/disassemble';
+import type {Label} from '../backend/types';
+import {LabelEditor} from './LabelEditor';
+export function LabelsPanel({patterns=false}:{patterns?:boolean}){
+ const [deleting,setDeleting]=useState<Label|null>(null);
+ const [transfer,setTransfer]=useState(false);const s=useDebugger();const openView=useOpenView();const [filter,setFilter]=useState(''),[editing,setEditing]=useState<Label|null>(null),[limit,setLimit]=useState(150);
+ const [category,setCategory]=usePanelSetting('labelCategory',patterns?'DATA':'ALL');const [context,setContext]=usePanelSetting('labelContext',false);
+ useEffect(()=>{setEditing(null);setDeleting(null);setTransfer(false);setLimit(150);},[s.project?.id]);
+ const labels=(s.project?.labels||[]).filter(l=>(category==='ALL'||l.type===category||(category==='DATA'&&l.type.startsWith('DATA')))&&(!context||(l.space===s.space&&l.address<=s.selected&&l.end>=s.selected))&&(`${l.name} ${l.comment} ${hex(l.address)} ${hex(l.end)}`).toLowerCase().includes(filter.toLowerCase()));
+ return <>{deleting&&createPortal(<div className="modal-shade" onClick={()=>setDeleting(null)}><section className="settings-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-label-title" onClick={e=>e.stopPropagation()} onKeyDown={e=>{if(e.key==='Escape')setDeleting(null);if(e.key==='Tab'){const buttons=Array.from(e.currentTarget.querySelectorAll('button'));const first=buttons[0],last=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}}}><h2 id="delete-label-title">{tr("Удалить метку?")}</h2><p><strong>{deleting.name}</strong> · ${hex(deleting.address)}–${hex(deleting.end)}</p><p>{deleting.memoryScope?scopeCaption(deleting.memoryScope):deleting.space.toUpperCase()}</p><div className="panel-tools"><button autoFocus onClick={()=>setDeleting(null)}>{tr("Отмена")}</button><button onClick={()=>{if(!s.project)return;updateProject({labels:s.project.labels.filter(l=>l.id!==deleting.id)});if(editing?.id===deleting.id)setEditing(null);setDeleting(null);}}>{tr("Удалить")}</button></div></section></div>,document.body)}<SymbolLibrary/><div className="panel-tools"><input placeholder={tr("Filter labels…")} value={filter} onChange={e=>{setFilter(e.target.value);setLimit(150);}}/><select aria-label={tr("Label category")} value={category} onChange={e=>{setCategory(e.target.value);setLimit(150);}}>{['ALL','SCREEN','MUSIC','PROC','DATA','COMMENT','AREA','LABEL'].map(c=><option key={c} value={c}>{localizedTypeCaption(c)}</option>)}</select><button aria-label={tr("Add label")} onClick={()=>setEditing({id:crypto.randomUUID(),name:'',address:s.selected,end:s.selected,space:s.space,type:category==='ALL'?'LABEL':category,comment:''})}>+</button><span>{labels.length}</span><button onClick={()=>setTransfer(!transfer)}>{tr("Import / export")}</button><label><input type="checkbox" checked={context} onChange={e=>setContext(e.target.checked)}/>{tr("At selection")}</label></div>
+ {transfer&&<LabelTransfer key={s.project?.id} close={()=>setTransfer(false)}/>}
+ {editing&&<LabelEditor key={editing.id} label={editing} close={()=>setEditing(null)}/>}
+ <div className="data-scroll"><table className="debug-table"><thead><tr><th>{tr("Start / end")}</th><th>{tr("Name / description")}</th><th>{tr("Type / bytes")}</th><th/></tr></thead><tbody>{labels.slice(0,limit).map(l=><tr key={l.id} className={s.selected>=l.address&&s.selected<=l.end&&s.space===l.space?'selected-row':''} onClick={()=>{select(l.address,l.space);if(l.space==='cpu')window.dispatchEvent(new CustomEvent('msxlab:label-entry',{detail:l}));}} title={l.comment}><td>{hex(l.address)}<small className="label-detail">{hex(l.end)} · {l.memoryScope?scopeCaption(l.memoryScope):l.space.toUpperCase()}</small></td><td>{l.name}{l.comment&&<small className="label-detail label-description">{l.comment}</small>}</td><td>{l.type}<small className="label-detail">{l.end-l.address+1}{" "}{tr("bytes")}</small></td><td>{!l.memoryScope&&l.type.startsWith('DATA')&&l.space!=='rom'&&<><button aria-label={tr("Watch writes to ")+l.name} title={tr("Stop when this data block is written")} onClick={e=>{e.stopPropagation();watchAddress(l.address,l.space,l.end);}}>W</button>{l.space==='cpu'&&<button aria-label={tr("Pin watch ")+l.name} title={tr("Add value to Watches")} onClick={e=>{e.stopPropagation();pinWatch(l.address);}}>☆</button>}</>}<button aria-label={tr("Open block ")+l.name} title={tr("Open a separate view for this block")} onClick={e=>{e.stopPropagation();const view=labelView(l);openView(view.kind,view.preferences);}}>↗</button><button aria-label={tr("Edit ")+l.name} onClick={e=>{e.stopPropagation();setEditing(l);}}><SquarePen size={16}/></button><button aria-label={tr("Delete ")+l.name} onClick={e=>{e.stopPropagation();setDeleting(l);}}>×</button></td></tr>)}</tbody></table>{labels.length>limit&&<button onClick={()=>setLimit(limit+150)}>{tr("Show more")}</button>}</div></>;
+}
+
+function localizedTypeCaption(value:string){const caption=labelTypeCaption(value),split=caption.indexOf(' — ');return split<0?caption:caption.slice(0,split+3)+tr(caption.slice(split+3));}

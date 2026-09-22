@@ -1,0 +1,6 @@
+import {t as tr} from '../i18n';
+import {hex} from '../backend/disassemble';
+export function MSXHeader({bytes,address,onGo}:{bytes:number[];address:number;onGo:(address:number)=>void}){
+ const fields=[[2,'INIT',tr("Инициализация")],[4,'STATEMENT',tr("Обработчик CALL")],[6,'DEVICE',tr("Обработчик устройства")],[8,'TEXT',tr("Программа BASIC")]] as const;
+ return <section className="msx-header"><strong>{tr("Заголовок MSX ROM · 16 байт")}</strong><div>{tr("Сигнатура:")}{" "}{bytes[0]===65&&bytes[1]===66?tr("AB — корректная"):tr("не AB — проверьте тип структуры")}</div><table><tbody>{fields.map(([offset,name,description])=>{const value=bytes[offset]|bytes[offset+1]<<8;return <tr key={name}><td>+{hex(offset,2)}</td><td>{name}</td><td>{value?<button onClick={e=>{e.stopPropagation();onGo(value);}}>${hex(value)} →</button>:tr("не задан")}</td><td>{description}</td></tr>;})}<tr><td>+0A</td><td>RESERVED</td><td colSpan={2}>{bytes.slice(10,16).every(b=>b===0)?tr("6 резервных байт · нули"):bytes.slice(10,16).map(b=>hex(b,2)).join(' ')}</td></tr></tbody></table><div className="msx-header-bytes" aria-label={tr("Байты заголовка ${p0}–${p1}",{p0:(hex(address)),p1:(hex(address+15))})} title={tr("${p0}–${p1}",{p0:(hex(address)),p1:(hex(address+15))})}><code>{bytes.map(b=>hex(b,2)).join(' ')}</code></div></section>;
+}

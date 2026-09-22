@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+.msxlab-runtime.json
+projects/*/captures/*.png
+
+# Private sibling repository; linked locally by scripts/link-projects.mjs
+/projects
+/work
+/docs/reference
+/engines/webmsx-6.0.8
+/resources/environments/msxdos1
+.env
+.env.*
+!.env.example
+
+ai.json
+ai-secrets.json
+*.pem
+*.key

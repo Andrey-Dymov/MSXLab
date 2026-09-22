@@ -1,0 +1,32 @@
+import {sameScope} from '../backend/memoryScope';
+import {useSyncExternalStore} from 'react';
+import type {DebuggerBackend,Snapshot,Project,Space,TraceEntry} from '../backend/types';
+interface State {hoverReference?:{address:number;kind:"branch"|"memory"}|null;reference?:{address:number;kind:"branch"|"memory"}|null;navigation:{address:number;space:Space}[];navigationIndex:number;project:Project|null;projects:{id:string;name:string;kind:string}[];snapshot:Snapshot|null;previous:Snapshot|null;selected:number;space:Space;error:string;notice:string;loading:boolean;revision:number;saved:boolean;saveError:string;session:number;history:number|null;historical:TraceEntry|null;traceOn:boolean}
+let state:State={navigation:[{address:0x4000,space:"cpu"}],navigationIndex:0,project:null,projects:[],snapshot:null,previous:null,selected:0x4000,space:'cpu',error:'',notice:'Loading project…',loading:true,revision:0,saved:true,saveError:'',session:0,history:null,historical:null,traceOn:false};
+const undoStack:Project[]=[],redoStack:Project[]=[];
+export function undoResearch(){if(!undoStack.length||!state.project)return;redoStack.push(state.project);const p=undoStack.pop()!;updateProject(p,false);}
+export function redoResearch(){if(!redoStack.length||!state.project)return;undoStack.push(state.project);updateProject(redoStack.pop()!,false);}
+const listeners=new Set<()=>void>();let backend:DebuggerBackend|null=null;let loadGeneration=0;let unsubscribe:(()=>void)|null=null;let saveChain=Promise.resolve();
+export const store={get:()=>state,subscribe:(fn:()=>void)=>{listeners.add(fn);return()=>{listeners.delete(fn);};},set:(patch:Partial<State>)=>{state={...state,...patch};listeners.forEach(fn=>fn());}};
+export function useDebugger(){return useSyncExternalStore(store.subscribe,store.get,store.get);}
+export async function initialize(){try{if(!window.desktop)throw Error('Run MSXLab in Electron to connect a project');const projects=await window.desktop.listProjects();store.set({projects});await loadProject(projects.find(p=>p.id===localStorage.getItem('msxlab.activeProject'))?.id||projects.find(p=>p.id==='kings-valley')?.id||projects[0]?.id);}catch(e){fail(e);}}
+export function fail(e:unknown){store.set({error:e instanceof Error?e.message:String(e),loading:false});}
+export async function loadProject(id:string){const generation=++loadGeneration;try{await saveChain;if(state.project&&!state.saved)throw Error('Current project has unsaved research. Retry saving before switching projects.');const project=await window.desktop!.loadProject(id),projects=await window.desktop!.listProjects();if(generation!==loadGeneration)return;undoStack.length=0;redoStack.length=0;localStorage.setItem('msxlab.activeProject',id);void window.desktop?.savePreference('msxlab.activeProject',id);store.set({project,projects,saved:true,saveError:'',hoverReference:undefined,reference:null,snapshot:null,previous:null,selected:project.kind==='mock'?0x8000:0x4000,space:'cpu',navigation:[{address:project.kind==='mock'?0x8000:0x4000,space:'cpu'}],navigationIndex:0,history:null,session:state.session+1,loading:true,error:'',notice:project.researchMismatch?'Program changed: research needs verification':'Starting '+project.name,traceOn:false});}catch(e){fail(e);}}
+export function connect(next:DebuggerBackend){unsubscribe?.();backend=next;unsubscribe=next.subscribe(snapshot=>{const prev=state.snapshot;store.set({snapshot,previous:prev?.seq!==snapshot.seq?prev:state.previous,loading:false});});}
+export function disconnect(current:DebuggerBackend){if(backend===current){unsubscribe?.();unsubscribe=null;backend=null;}current.dispose();}
+export async function command<T=unknown>(name:string,args?:unknown){const current=backend;try{if(!backend)throw Error('Engine is not ready');store.set({error:'',history:null,historical:null});return await backend.command<T>(name,args);}catch(e){if(current===backend)fail(e);return undefined;}}
+export function select(address:number,space:Space='cpu'){
+ store.set({reference:null});
+ const selected=Math.max(0,Math.min(space==='cpu'?65535:space==='rom'?Math.max(0,(state.snapshot?.rom.length||65536)-1):16383,address|0));
+ if(selected===state.selected&&space===state.space){store.set({history:null,historical:null});return;}
+ const navigation=[...state.navigation.slice(0,state.navigationIndex+1),{address:selected,space}].slice(-200);
+ store.set({selected,space,navigation,navigationIndex:navigation.length-1,history:null,historical:null});
+}
+export function navigate(delta:number){const index=state.navigationIndex+delta;if(index<0||index>=state.navigation.length)return;const point=state.navigation[index];store.set({selected:point.address,space:point.space,navigationIndex:index,history:null,historical:null});}
+export function updateProject(patch:Partial<Project>,record=true){if(!state.project)return;if(record){undoStack.push(state.project);if(undoStack.length>50)undoStack.shift();redoStack.length=0;}const p={...state.project,...patch};store.set({project:p,saved:false,saveError:'',error:'',revision:state.revision+1});if('breakpoints'in patch)void command('breakpoints',p.breakpoints);if('watchpoints'in patch)void command('watchpoints',p.watchpoints||[]);saveChain=saveChain.catch(()=>{}).then(async()=>{try{await window.desktop!.saveProject(p.id,p);if(state.project===p)store.set({saved:true,saveError:'',notice:'Project saved'});}catch(e){store.set({saveError:e instanceof Error?e.message:String(e)});fail(e);}});}
+export function toggleBreakpoint(address:number,memoryScope?:import('../backend/types').MemoryScope){const p=state.project;if(!p)return;updateProject({breakpoints:p.breakpoints.some(b=>b.address===address&&sameScope(b.memoryScope,memoryScope))?p.breakpoints.filter(b=>b.address!==address||!sameScope(b.memoryScope,memoryScope)):[...p.breakpoints,{address,enabled:true,memoryScope}]});}
+export async function capture(){const data=await command<string>('capture');if(data&&state.project){try{const result=await window.desktop!.capture(state.project.id,data);store.set({notice:'Saved '+result.name});}catch(e){fail(e);}}}
+export function reset(){if(!state.project)return;store.set({snapshot:null,previous:null,session:state.session+1,loading:true,history:null,notice:'Restarting machine'});}
+export async function flushResearch(){await saveChain;if(!state.saved)throw Error(state.saveError||state.error||'Project changes could not be saved');}
+
+export function retryResearchSave(){if(state.project&&!state.saved)updateProject({},false);}

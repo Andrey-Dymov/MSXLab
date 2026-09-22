@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "active": "webmsx-6.0.8",
+  "engines": [
+    {
+      "id": "webmsx-6.0.8",
+      "name": "WebMSX 6.0.8",
+      "script": "webmsx-6.0.8/wmsx.js",
+      "adapter": "webmsx-6.0.8",
+      "source": "https://github.com/ppeccin/WebMSX/releases/tag/v6.0.8",
+      "sha256": "f24443faf9a55a018785eaf2cf291d74e19284e3785b291a2c0ef29af06b07bd"
+    }
+  ]
+}

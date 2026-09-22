@@ -1,0 +1,3 @@
+import {musicNotes,type MusicCapture} from './music';
+// Audible preview of the captured tone voices; not a cycle-exact AY emulation.
+export function renderMusic(c:MusicCapture,rate=22050,channels=[true,true,true]){const pcm=new Float32Array(Math.ceil(c.frames/c.fps*rate));for(const n of musicNotes(c)){if(!channels[n.channel]||!n.frequency)continue;const start=Math.floor(n.start/c.fps*rate),end=Math.min(pcm.length,Math.floor(n.end/c.fps*rate)),gain=.15*(n.envelope?.5:Math.pow(10,(n.volume-15)*1.5/20));for(let i=start;i<end;i++){const fade=Math.min(1,(i-start)/64,(end-i)/64);pcm[i]+=(Math.sin(2*Math.PI*n.frequency*i/rate)>=0?1:-1)*gain*fade;}}return pcm;}

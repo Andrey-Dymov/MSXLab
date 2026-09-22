@@ -1,0 +1,10 @@
+// Narrow, explicit FAT12 writer: fresh 720KB MSX disk based on a supplied boot sector.
+function makeDisk(template,files){
+ const bytes=template.readUInt16LE(11),clusterSectors=template[13],reserved=template.readUInt16LE(14),fats=template[16],rootEntries=template.readUInt16LE(17),sectors=template.readUInt16LE(19),fatSectors=template.readUInt16LE(22);
+ if(bytes!==512||clusterSectors!==2||reserved!==1||fats!==2||sectors!==1440||fatSectors!==3||rootEntries!==112)throw Error('Only standard 720KB MSX FAT12 disks are supported');
+ const disk=Buffer.alloc(sectors*bytes);template.copy(disk,0,0,bytes);const fat=Buffer.alloc(fatSectors*bytes);fat[0]=template[21];fat[1]=255;fat[2]=255;const rootStart=(reserved+fats*fatSectors)*bytes,rootSize=Math.ceil(rootEntries*32/bytes)*bytes,dataStart=rootStart+rootSize,clusterBytes=clusterSectors*bytes;let next=2,index=0;const names=new Set();
+ const setFat=(cluster,value)=>{const off=Math.floor(cluster*3/2);if(cluster&1){fat[off]=(fat[off]&15)|((value&15)<<4);fat[off+1]=value>>4;}else{fat[off]=value&255;fat[off+1]=(fat[off+1]&240)|(value>>8);}};
+ for(const f of files){const name=f.name.toUpperCase();if(!/^[A-Z0-9_!#$%&'()@^`{}~-]{1,8}(\.[A-Z0-9_!#$%&'()@^`{}~-]{1,3})?$/.test(name)||names.has(name))throw Error('Invalid or duplicate 8.3 filename: '+name);names.add(name);if(index>=rootEntries)throw Error('Disk directory is full');const count=Math.ceil(f.content.length/clusterBytes);if(dataStart+(next-2+count)*clusterBytes>disk.length)throw Error('Program does not fit on disk');const entry=rootStart+index++*32;const [stem,ext='']=name.split('.');disk.write(stem.padEnd(8)+ext.padEnd(3),entry,11,'ascii');disk[entry+11]=0x20;disk.writeUInt16LE(count?next:0,entry+26);disk.writeUInt32LE(f.content.length,entry+28);for(let i=0;i<count;i++){setFat(next+i,i===count-1?0xfff:next+i+1);f.content.copy(disk,dataStart+(next+i-2)*clusterBytes,i*clusterBytes,(i+1)*clusterBytes);}next+=count;}
+ for(let i=0;i<fats;i++)fat.copy(disk,(reserved+i*fatSectors)*bytes);return disk;
+}
+module.exports={makeDisk};
