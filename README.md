@@ -1,18 +1,22 @@
 # MSXLab
 
-Настольная лаборатория для запуска и исследования программ MSX. Приложение объединяет эмулятор, дизассемблер, просмотр памяти, графики и звука, разметку кода и инструменты поиска игровой логики.
+**English** | [Русский](README.ru.md)
 
-MSXLab работает с реальным состоянием эмулируемой машины: позволяет остановить программу, посмотреть данные, выяснить, какая инструкция их изменила, и сохранить результаты исследования в проекте.
+A desktop workspace for running, debugging, and exploring MSX software. MSXLab combines an emulator, a Z80 disassembler, memory and graphics viewers, sound analysis, code annotations, and tools for investigating game logic.
 
-Это развивающееся приложение. Некоторые специализированные инструменты созданы для King’s Valley; наличие просмотрщика не означает автоматическое распознавание ресурсов любой игры.
+Work with the live state of an emulated machine: pause a program, inspect its data, identify instructions that changed it, and save your findings in a project.
 
-## Быстрый старт
+MSXLab is under active development. Some specialized tools target King’s Valley; they do not automatically recognize resources in arbitrary games.
 
-На настроенном Mac откройте `Start MSXLab.command`. Повторный запуск поднимает существующее окно.
+## Getting started
 
-Проверенная среда — macOS, Node.js 23 и npm. Другие платформы пока не проверены. Для запуска нужен отдельно подключённый комплект движка и DOS. Если у вас есть доступ к MSXProjects, клонируйте его рядом с MSXLab; подробнее — [структура репозиториев](docs/REPOSITORIES.md).
+The tested environment is macOS with Node.js 23 and npm. Other platforms have not been verified.
 
-Из каталога MSXLab:
+**The public repository does not include the emulator distribution, DOS system files, or user projects.** To use the existing local setup:
+
+1. Clone MSXLab and, if you have access, the private MSXProjects repository into sibling directories.
+2. Separately place your local WebMSX distribution in `MSXProjects/engines/webmsx-6.0.8`. It is excluded from both repositories pending clarification of its license.
+3. Run the following commands from MSXLab:
 
 ```sh
 npm ci
@@ -21,130 +25,132 @@ npm run build
 npm start
 ```
 
-Для разработки: `npm run dev`. Обычный веб-просмотр не заменяет Electron: работа с локальными проектами требует desktop-моста.
+See [repository layout and local setup](docs/REPOSITORIES.md) and [third-party components](THIRD_PARTY.md) for details. Supporting documents are currently mostly in Russian.
 
-1. Откройте проект в **Projects** и дождитесь загрузки.
-2. Нажмите на экран эмулятора, чтобы передавать игре нажатия клавиш.
-3. Используйте **Pause**, **Step Into**, **Step Over** и **Run** для исследования выполнения.
-4. Откройте нужные инструменты через **Panels**.
-5. Добавляйте имена и описания в **Labels** — они сохраняются в проекте.
+On a configured Mac, you can also open `Start MSXLab.command`. Launching again brings the existing window to the front.
 
-Выбор адреса в просмотрщике сам по себе не меняет регистр PC. Reset и команды запуска воздействуют на машину.
+For development, use `npm run dev`. A browser-only preview does not replace Electron: local project operations require the desktop bridge.
 
-## Возможности для пользователя
+1. Open a project in **Projects** and wait for it to load.
+2. Click the emulator screen to send keyboard input to the MSX.
+3. Use **Pause**, **Step Into**, **Step Over**, and **Run** to inspect execution.
+4. Open tools through **Panels**.
+5. Add names and descriptions in **Labels**; they are saved with the project.
 
-### Рабочее пространство
+Selecting an address in a viewer does not change the program counter. Reset and execution commands affect the emulated machine.
 
-- Светлая и тёмная темы.
-- Языковые пакеты: русский, английский, японский, португальский, нидерландский, испанский, китайский (упрощённый). Переведены меню, панели, настройки, подсказки и сообщения приложения; [покрытие перевода](docs/LANGUAGES.md).
-- Перемещаемые панели, вкладки и дополнительные экземпляры просмотрщиков.
-- Разворачивание панели в большое окно с возвратом на прежнее место.
-- Подсветка панели при её повторном открытии, чтобы её было проще найти.
-- Именованные раскладки и сохранение настроек основных панелей.
+## Features
 
-### Выполнение и отладка
+### Workspace
 
-- Пауза на границе инструкции, продолжение и пошаговое выполнение Z80.
-- Проход вызова и выполнение до выбранного адреса.
-- Точки останова, в том числе с простыми условиями по регистрам.
-- Остановки по доступу к памяти и портам I/O; для VRAM — по записи.
-- Регистры, флаги, стек, наблюдаемые значения и ограниченная трасса выполнения.
-- Редактирование RAM, VRAM и регистров на паузе; отмена последней записи памяти с проверкой конфликта.
+- Light and dark themes.
+- English, Russian, Japanese, Portuguese, Dutch, Spanish, and Simplified Chinese language packs for menus, panels, settings, tooltips, and messages. See [translation coverage](docs/LANGUAGES.md).
+- Movable panels, tabs, and additional viewer instances.
+- Expanded panel views with restoration to their previous positions.
+- Visual highlighting when reopening an existing panel.
+- Named layouts and saved settings for major panels.
 
-### Память, слоты и код
+### Execution and debugging
 
-- HEX, текст и числовые представления памяти; закреплённый адрес или следование за выбранным адресом и регистрами.
-- CPU-память, видеопамять и отдельные файлы проекта. CPU означает текущую карту адресов процессора, включая подключённые RAM и ROM.
-- Компактная карта для выбора слота и подслота; обозначения разъёмов A/B и подсветка памяти, подключённой к CPU.
-- Чтение поддерживаемых физических слотов и банков RAM без изменения подключения памяти игры.
-- Отдельная панель **Слоты памяти** с окнами по 16 КБ и текущими подключениями.
-- Дизассемблер Z80: код, код с данными, просмотр процедуры, имена операндов и переходы по адресам.
-- Дизассемблирование выбранного файла с настраиваемым базовым адресом и смещением в файле.
-- Метки, комментарии, диапазоны процедур и данных; импорт и экспорт разметки.
+- Pause at instruction boundaries, resume, and step through Z80 instructions.
+- Step over calls and run to a selected address.
+- Breakpoints, including simple register conditions.
+- Memory and I/O access watchpoints; VRAM write watchpoints.
+- Registers, flags, stack, watched values, and a bounded execution trace.
+- Edit RAM, VRAM, and registers while paused; undo the last memory write with conflict checking.
 
-Файловое смещение и адрес CPU — разные величины. Базовый адрес файла нужно проверять, особенно у программ с загрузчиком, заголовками, переносом кода или банковой памятью. Поддержка чтения физических слотов зависит от типа устройства.
+### Memory, slots, and code
 
-### Поиск и анализ
+- Hexadecimal, text, and numeric memory views, with fixed addresses or tracking of selections and registers.
+- CPU memory, video memory, and individual project files. CPU memory means the current processor address map, including mapped RAM and ROM.
+- A compact slot and subslot map, A/B connector labels, and highlighting of memory currently mapped to the CPU.
+- Read supported physical slots and RAM banks without changing the program’s memory mapping.
+- A **Memory Slots** panel showing 16 KB windows and their current mappings.
+- Z80 disassembly with code/data views, procedure views, named operands, and address navigation.
+- File disassembly with configurable base address and file offset.
+- Labels, comments, procedure and data ranges, and annotation import/export.
 
-- Поиск чисел, текста и последовательностей байтов с маской.
-- **Memory Changes**: сравнение состояний памяти, отбор изменившихся значений и сужение списка кандидатов.
-- Имена известных переменных рядом с адресами; сведения о записавших инструкциях при включённом сборе соответствующих данных.
-- Счётчики выполнения инструкций, дерево функций и хронология вызовов.
-- Прямые ссылки на адреса, карты активности памяти, графики значений и схемы структур.
+File offsets and CPU addresses are different. Check the base address for programs with loaders, headers, relocated code, or banked memory. Physical slot reading depends on the device type.
 
-Статическое дерево и реальные записи выполнения решают разные задачи. Статический анализ не гарантирует обнаружение косвенных вызовов. Нулевой счётчик относится к периоду наблюдения, а не доказывает, что функция никогда не выполняется.
+### Search and analysis
 
-### Графика, звук и игровые ресурсы
+- Search for numbers, text, and masked byte patterns.
+- **Memory Changes**: compare memory states, filter changed values, and narrow down candidates.
+- Known variable names alongside addresses, and writer-instruction information when the corresponding tracking is enabled.
+- Instruction execution counters, function trees, and call timelines.
+- Address links, memory activity maps, value plots, and structure diagrams.
 
-- Экран эмулятора, PNG-снимки и исследование аппаратных спрайтов.
-- Спрайты, тайлы, шрифты, палитра, битмапы и карты символов.
-- Каталог описаний ресурсов **Assets**.
-- Заставки King’s Valley: восстановленная картинка, три секции SCREEN 2, коды символов, пиксельная маска, построчные цвета и сведения об исходных данных.
-- Редактор уровней King’s Valley: стены и пустоты, размещение поддерживаемых объектов, редактирование существующих лестниц и сохранение новой версии ROM.
-- PSG: просмотр регистров, запись звучания, piano roll и экспорт музыкальных данных.
+Static analysis and recorded execution provide different evidence. Static analysis may miss indirect calls. A zero execution count applies to the observation period; it does not prove a function is never called.
 
-Редактор уровней и восстановление заставок зависят от формата конкретной игры. Запись PSG отражает наблюдаемое звучание, а не восстанавливает исходную партитуру.
+### Graphics, sound, and game resources
 
-### Сохранение работы
+- Emulator screen, PNG captures, and hardware sprite inspection.
+- Sprites, tiles, fonts, palettes, bitmaps, and character maps.
+- An **Assets** catalog of resource descriptions.
+- King’s Valley title screens: reconstructed images, three SCREEN 2 sections, character codes, pixel masks, per-line colors, and source data details.
+- King’s Valley level editing: walls and empty spaces, supported objects, existing ladders, and saving a new ROM version.
+- PSG registers, sound recording, piano roll, and music data export.
 
-- Автоматическое сохранение разметки проекта, история исследовательских изменений.
-- Версии ROM и комплекты сборок; предупреждения о несовпадении разметки и программы.
-- Профили запуска отдельно от раскладок панелей.
-- Именованные состояния эмулятора с проверкой совместимости проекта, сборки и окружения.
-- Экспериментальная запись и повтор ввода.
+Level editing and title-screen reconstruction depend on the specific game format. PSG recording captures observed sound rather than recovering an original score.
 
-Состояние машины, версия ROM, исследовательская разметка и расположение панелей сохраняются раздельно. Восстановление машины не является откатом всех файлов проекта.
+### Saving your work
 
-## Поддерживаемые форматы проектов
+- Automatic project annotation saving and research change history.
+- ROM versions and build bundles, with warnings when annotations do not match the program.
+- Launch profiles separate from panel layouts.
+- Named emulator checkpoints with project, build, and environment compatibility checks.
+- Experimental input recording and replay.
 
-| Тип | Основные файлы | Как запускается |
+Machine state, ROM versions, annotations, and panel layouts are stored separately. Restoring a machine checkpoint does not roll back all project files.
+
+## Project formats
+
+| Type | Main files | Launch behavior |
 | --- | --- | --- |
-| ROM-картридж | `.rom`, `.mx1`, `.mx2` | Образ подключается к эмулируемой машине как картридж. |
-| MSX-DOS | `.com` | Создаётся диск FAT12 720 КБ с MSX-DOS 1; программа запускается как `APP.COM`. Можно добавить сопровождающие файлы. |
-| MSX BASIC | `.bas` | Создаётся диск с программой и выполняется автоматический RUN. |
-| Программа с загрузчиком | Родной BASIC-загрузчик, в том числе токенизированный, и набор файлов | Загрузчик запускается под своим именем и сам определяет порядок загрузки, перенос кода и размещение модулей. |
-| Демонстрационный | Внутренний Mock backend | Имитация для демонстрации интерфейса; это не исполнение реальной программы MSX. |
+| ROM cartridge | `.rom`, `.mx1`, `.mx2` | Mounts the image as a cartridge. |
+| MSX-DOS | `.com` | Creates a 720 KB FAT12 disk with MSX-DOS 1 and launches `APP.COM`. Companion files can be included. |
+| MSX BASIC | `.bas` | Creates a program disk and runs the BASIC program automatically. |
+| Loader-based program | Original BASIC loader, including tokenized BASIC, and companion files | Runs the loader under its original name; the loader controls loading order, relocation, and module placement. |
+| Demo | Internal mock backend | Simulates the interface; it does not execute real MSX software. |
 
-**Первичное создание проекта из файла** принимает `.rom`, `.mx1`, `.mx2`, `.com`, `.bas`. Режим «Программа с загрузчиком» настраивается в выборе типа проекта: указываются загрузчик, модель машины и сопровождающие файлы.
+Creating a project from a file accepts `.rom`, `.mx1`, `.mx2`, `.com`, and `.bas`. Configure loader-based programs through the project type selector, specifying the loader, machine, and companion files.
 
-`.OBJ`, `.BIN` и другие модули могут быть сопровождающими файлами загрузчика. Само расширение не определяет, куда и как их нужно загружать. Например, несколько модулей могут загружаться по одному адресу и затем переносить себя в другие области памяти.
+`.OBJ`, `.BIN`, and other modules may be companion files. Their extensions do not determine where or how they should be loaded. Multiple modules may load at the same address and relocate themselves elsewhere.
 
-- На диске используются имена DOS 8.3; сопровождающие файлы загрузчика сохраняют свои имена.
-- В настройках доступны MSX1E, MSX1J, MSX2E и MSX2J. Требования самой программы к BIOS, памяти и периферии сохраняются.
-- Можно подключить дополнительный ROM, выбрать файлы DOS и настроить команду запуска.
-- Дисковый образ используется как часть окружения. Произвольный `.dsk` не является отдельным типом прямого импорта проекта.
-- Прямой импорт кассет `.cas`, архивов `.zip` и произвольных состояний сторонних эмуляторов этим списком не предусмотрен.
+- Disks use DOS 8.3 filenames. Loader companion files retain their names.
+- Machine settings include MSX1E, MSX1J, MSX2E, and MSX2J. Programs still require a compatible BIOS, memory configuration, and peripherals.
+- You can attach an additional ROM, select DOS files, and configure the launch command.
+- Disk images are part of the environment. Arbitrary `.dsk` files are not a separate direct project import type.
+- Direct import of `.cas`, `.zip`, or arbitrary third-party emulator states is not included in this list.
 
-Проект хранится в `projects/<id>/project.json`. В зависимости от проекта рядом находятся `program`, `environment`, `builds`, `research`, `resources`, `captures` и `sessions`. Исходные программы копируются в проект; подготовленные комплекты запуска сохраняются с контрольными суммами.
+Each project has a `projects/<id>/project.json` file. Depending on the project, adjacent directories include `program`, `environment`, `builds`, `research`, `resources`, `captures`, and `sessions`. Original programs are copied into the project, and prepared launch bundles are stored with checksums.
 
-## Удалённое управление и интеграция с помощником
+## Automation and assistant integration
 
-Приложением можно управлять программно через **локальный HTTP API**. В репозитории также есть **stdio MCP-мост** для подключения к совместимому клиенту.
+MSXLab exposes a **local HTTP API** and includes a **stdio MCP bridge** for compatible clients. Both control an already running instance on the same computer; access from other computers is not configured.
 
-Это управление уже запущенным MSXLab на том же компьютере. Сетевой доступ с другого компьютера отдельно не настроен.
+### API capabilities
 
-### Что доступно через API
-
-| Задача | Команды |
+| Task | Commands |
 | --- | --- |
-| Узнать состояние и проекты | `status`, `projects`, `apiCapabilities` |
-| Загрузить и настроить запуск | `loadProject`, `createProject`, `updateBuild`, `configureLaunch`, `launchProfile` |
-| Перезапустить | `reset`, `restartProject` |
-| Отметить исходное состояние и вернуться | `markInitialState`, `restoreInitialState` |
-| Сохранить полный снимок машины | `saveCheckpoint`, `listCheckpoints`, `restoreCheckpoint` |
-| Управлять выполнением | `run`, `pause`, `step`, `stepOver`, `until`, `runFor`, `runUntil` |
-| Читать память, слоты и код | `readMemory`, `readSlots`, `readSlotMemory`, `registers`, `readDisassembly`, `readReferences` |
-| Искать и сравнивать | `searchMemory`, `rememberState`, `compareState` |
-| Узнать содержимое панелей | `listPanels`, `readPanel` |
-| Получить изображения | `capture` — сохранить экран; `captureImage` — вернуть PNG экрана или изображения из панели |
-| Работать с исследованием | `readLabels`, `upsertLabels`, `undoResearch`, `setBreakpoints`, `setWatchpoints` |
-| Изменять данные и собирать трассу | `writeMemory`, `setRegister`, `trace`, `readTrace` |
+| Inspect status and projects | `status`, `projects`, `apiCapabilities` |
+| Load and configure programs | `loadProject`, `createProject`, `updateBuild`, `configureLaunch`, `launchProfile` |
+| Restart | `reset`, `restartProject` |
+| Mark and restore an initial state | `markInitialState`, `restoreInitialState` |
+| Save full machine checkpoints | `saveCheckpoint`, `listCheckpoints`, `restoreCheckpoint` |
+| Control execution | `run`, `pause`, `step`, `stepOver`, `until`, `runFor`, `runUntil` |
+| Read memory, slots, and code | `readMemory`, `readSlots`, `readSlotMemory`, `registers`, `readDisassembly`, `readReferences` |
+| Search and compare | `searchMemory`, `rememberState`, `compareState` |
+| Inspect panels | `listPanels`, `readPanel` |
+| Capture images | `capture` saves the screen; `captureImage` returns a screen or panel image as PNG |
+| Edit research | `readLabels`, `upsertLabels`, `undoResearch`, `setBreakpoints`, `setWatchpoints` |
+| Change state and collect traces | `writeMemory`, `setRegister`, `trace`, `readTrace` |
 
-### Подключение по HTTP
+### HTTP connection
 
-После запуска приложение создаёт `.msxlab-runtime.json` с локальным адресом API и токеном. Порт не следует фиксировать вручную. Токен передаётся в заголовке `Authorization: Bearer …`.
+At startup, the application writes its local API address and token to `.msxlab-runtime.json`. Do not hard-code the port. Send the token in the `Authorization: Bearer …` header.
 
-Тело POST-запроса:
+Example POST body:
 
 ```json
 {
@@ -153,47 +159,49 @@ npm start
 }
 ```
 
-Этот пример читает восемь байтов с адреса `$E0C0`. Числа в JSON — десятичные. Ответ HTTP содержит `result`, при ошибке — `error`. Новые команды обычно дополнительно указывают проект, сессию, время ответа и характер действия.
+This reads eight bytes at `$E0C0`. JSON numbers are decimal. Responses contain `result` on success or `error` on failure. Newer commands also provide context such as project, session, timestamp, and action type.
 
-Файл с токеном не предназначен для публикации. Команды чтения не изменяют данные игры; команды исполнения, записи и восстановления состояния могут их менять.
+Do not publish the runtime token file. Read commands do not alter the program’s data; execution, write, and state restoration commands can.
 
-### Подключение через MCP
+### MCP connection
 
-Запустите приложение, затем настройте клиент на запуск:
+Start MSXLab, then configure your client to run:
 
 ```sh
 node /absolute/path/to/MSXLab/scripts/mcp.mjs
 ```
 
-Мост передаёт запросы в тот же локальный HTTP API. Его фактический список инструментов возвращается через `tools/list`.
+The bridge forwards requests to the same local HTTP API. Its actual tool list is available through `tools/list`.
 
-**Покрытие HTTP и MCP пока различается:** новые команды из `docs/automation-api.md` добавлены в HTTP API, но ещё не зарегистрированы в `scripts/mcp.mjs`. Настройка клиента и установка подключения автоматически не выполняются.
+**HTTP and MCP coverage currently differ:** newer commands documented in `docs/automation-api.md` are available over HTTP but are not yet registered in `scripts/mcp.mjs`. Client configuration is not installed automatically.
 
-### Что важно учитывать
+### Limitations
 
-- «Исходное состояние» отмечается явно после нужного момента загрузки; приложение не угадывает его автоматически.
-- `readPanel` возвращает отрисованные элементы панели, а не полную модель скрытых данных. Неоткрытые панели могут отсутствовать.
-- `captureImage` экспортирует canvas/изображение или его фрагмент; это не универсальный снимок любой панели целиком.
-- `compareState` сравнивает CPU-видимую память, VRAM, регистры и подключения. Отключённые банки RAM не входят в это сравнение.
-- `runUntil` поддерживает адрес, запись в память и время. События переключения слота и появления картинки пока не реализованы.
-- `undoResearch` отменяет последнее API-изменение меток и отказывается работать при последующих конфликтующих правках. Это не общий откат проекта.
-- Возможности в этом README описывают исходники. Уже открытая старая сборка может не иметь новых команд до обновления приложения.
+- Mark the initial state explicitly after reaching the desired point; the application does not infer it.
+- `readPanel` returns rendered panel content, not the complete underlying model. Unopened panels may be absent.
+- `captureImage` exports a canvas/image or a region of it; it is not a general screenshot facility for every panel.
+- `compareState` compares CPU-visible memory, VRAM, registers, and slot mappings. Unmapped RAM banks are not included.
+- `runUntil` supports address, memory-write, and time conditions. Slot-switch and image-appearance conditions are not implemented.
+- `undoResearch` reverts the last API label change and rejects conflicting subsequent edits. It is not a general project rollback.
+- This README describes the source tree. An older running build may require an update before newer commands are available.
 
-Полные аргументы, ограничения и примеры поведения новых команд: [локальный API автоматизации](docs/automation-api.md).
+See the [automation API reference](docs/automation-api.md) for arguments, limitations, and examples.
 
-## Дополнительная документация
+## Documentation
 
-- [Графические ресурсы](docs/ASSETS.md)
-- [Музыка и PSG](docs/MUSIC.md)
-- [Активность памяти](docs/ACTIVITY.md)
-- [Заставки King’s Valley](docs/KINGS-VALLEY-SCREENS.md)
-- [Кодировки текста](docs/TEXT-CHARSETS.md)
-- [ИИ-функции](docs/AI.md)
-- [Архив прежнего подробного README](docs/README-legacy.md) — исторические заметки; отдельные сведения могли устареть.
+The following supporting documents are currently in Russian:
 
-## Разработка и проверка
+- [Graphics and assets](docs/ASSETS.md)
+- [Music and PSG](docs/MUSIC.md)
+- [Memory activity](docs/ACTIVITY.md)
+- [King’s Valley title screens](docs/KINGS-VALLEY-SCREENS.md)
+- [Text encodings](docs/TEXT-CHARSETS.md)
+- [AI integration](docs/AI.md)
+- [Earlier README](docs/README-legacy.md) — historical notes; some details may be outdated.
 
-Стек: Electron, React, TypeScript, Dockview; эмуляция через адаптер WebMSX.
+## Development and validation
+
+Built with Electron, React, TypeScript, and Dockview, with emulation accessed through a WebMSX adapter.
 
 ```sh
 npm run typecheck
@@ -201,12 +209,12 @@ node tests/automation-api.mjs
 npm run build
 ```
 
-Первая команда проверяет типы, вторая — логику расширенного API на тестовых данных, третья собирает интерфейс. Эти проверки сами по себе не подтверждают совместимость каждой MSX-программы. Интеграционные тесты находятся в `tests` и `scripts`; перед их запуском следует учитывать, какие проекты и файлы они создают.
+These commands check types, test the extended API against test data, and build the interface. They do not establish compatibility with every MSX program. Integration tests live in `tests` and `scripts`; check which projects and files they create before running them.
 
-## Репозитории
+## Repositories
 
-Исходники лаборатории и пользовательские проекты разделены. См. [подключение MSXProjects](docs/REPOSITORIES.md).
+Laboratory source code and user projects are stored separately. See [connecting MSXProjects](docs/REPOSITORIES.md).
 
-## Участие и лицензирование
+## Contributing and licensing
 
-Порядок изменений: [CONTRIBUTING.md](CONTRIBUTING.md). Сторонние компоненты: [THIRD_PARTY.md](THIRD_PARTY.md). Лицензия на собственный код пока не выбрана; файл LICENSE будет добавлен после решения владельца.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and [THIRD_PARTY.md](THIRD_PARTY.md) for third-party components. A license for MSXLab’s own code has not yet been selected; a LICENSE file will be added after the owner makes that decision.
