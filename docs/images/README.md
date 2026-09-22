@@ -15,3 +15,7 @@ The user's active project and emulator session were not used for the capture.
 ## Architecture illustration
 
 `msxlab-architecture.png` is an AI-generated illustration, not an application screenshot. It shows the WebMSX emulation foundation, MSXLab inspection panels, and user/API access. The English, pixel-art design was generated with the built-in image-generation tool and selected by the project owner. Panel contents are illustrative; no game screenshots or extracted game artwork were used.
+
+## Calc80 spreadsheet
+
+`calc80-showcase-menu.png` is a real emulator-screen capture of our Calc80 application, with an original demonstration workbook, cell A2 selected, and the Table → Columns submenu open. It was captured in an isolated copy of the project; the active user session was preserved. It contains no third-party game artwork. The demo workbook is preserved separately in the private MSXProjects repository as `projects/msxtable/examples/SHOWMENU.MST`.

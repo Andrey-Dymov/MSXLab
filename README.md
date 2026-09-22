@@ -211,6 +211,14 @@ See the [automation API reference](docs/automation-api.md) for arguments, limita
 
 *Light theme with the panel selector open. The demonstration uses an original test-tone program and project-owned font samples; the PSG capture and call timeline contain recorded execution data.*
 
+## Built with MSXLab: Calc80
+
+![Calc80 running on MSX: a populated spreadsheet, selected data cell, and two-level column menu](docs/images/calc80-showcase-menu.png)
+
+Calc80 is our MSX spreadsheet application, with formulas, cell formatting, multiple sheets, MST/CSV files, and two-level menus. This is a real emulator screenshot, showing a demonstration workbook and the **Table → Columns** menu.
+
+Applications of this scope can be developed quickly and debugged conveniently by combining **MSXLab, the WebMSX emulator, and AI assistance**. AI helps write and revise code; the laboratory provides tools to inspect execution, memory, and results on the emulated machine. Calc80 is a practical example of this workflow.
+
 ## Documentation
 
 AI setup is available in English and Russian; the other supporting documents below are currently in Russian:
